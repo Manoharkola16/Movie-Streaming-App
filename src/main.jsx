@@ -1,5 +1,13 @@
-import createRoot from "react-dom/client";
-import App from "./App";
-import "./App.css";
+import React from "react";
+import ReactDOM from "react-dom/client";
 
-createRoot.createRoot(document.getElementById("root")).render(<App />);
+import AppRoutes from "./routes/AppRoutes";
+
+import "./App.css";
+import MovieProvider from "./context/MovieContext";
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <MovieProvider>
+    <AppRoutes />
+  </MovieProvider>
+);

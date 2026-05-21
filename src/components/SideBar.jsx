@@ -7,10 +7,12 @@ import {
   Flame,
   ListVideo,
   Sparkles,
+  Heart,
 } from "lucide-react";
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const desktopMenu = [
   { icon: Home, label: "Home" },
@@ -20,11 +22,13 @@ const desktopMenu = [
   { icon: Trophy, label: "Sports" },
   { icon: ListVideo, label: "Categories" },
   { icon: Search, label: "Search" },
+  { icon: Heart, label: "Watchlist" },
 ];
 
 const Sidebar = () => {
   const [hovered, setHovered] = useState(false);
    const [openSheet, setOpenSheet] = useState(false);
+   const navigate = useNavigate();
   return (
     <>
       {/* DESKTOP SIDEBAR */}
@@ -55,14 +59,27 @@ const Sidebar = () => {
 
             return (
               <div
-                key={index}
-                className="
-                  flex items-center gap-4
-                  cursor-pointer
-                  hover:text-pink-500
-                  transition-all duration-300
-                "
-              >
+                    key={index}
+                    onClick={() => {
+                      if (item.label === "Search") {
+                        navigate("/search");
+                      }
+
+                      if (item.label === "Home") {
+                        navigate("/home");
+                      }
+
+                      if (item.label === "Watchlist") {
+                        navigate("/watchlist");
+                      }
+                    }}
+                    className="
+                      flex items-center gap-4
+                      cursor-pointer
+                      hover:text-pink-500
+                      transition-all duration-300
+                    "
+                  >
                 <Icon size={28} />
 
                 {hovered && (
@@ -101,12 +118,13 @@ const Sidebar = () => {
           border border-gray-800
         ">
           {/* Search */}
-          <div className="text-white">
+          <div onClick={() => navigate("/search")}
+               className="flex flex-col items-center text-white cursor-pointer">
             <Search size={26} />
           </div>
 
           {/* Home */}
-          <div className="flex flex-col items-center text-white">
+          <div onClick={() => navigate("/")} className="flex flex-col items-center text-white cursor-pointer">
             <Home size={28} />
             <span className="text-sm">
               Home
@@ -127,93 +145,6 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
-      
-        {/* BOTTOM SHEET */}
-      <AnimatePresence>
-        {openSheet && (
-          <motion.div
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
-            transition={{ duration: 0.4 }}
-            className="
-              md:hidden
-              fixed bottom-0 left-0
-              w-full h-[75vh]
-              bg-[#0b1020]
-              rounded-t-[40px]
-              z-40
-              p-6
-              overflow-y-scroll
-            "
-          >
-            {/* DRAG LINE */}
-            <div className="w-20 h-1 bg-gray-500 rounded-full mx-auto mb-8" />
-
-            {/* Browse */}
-            <h2 className="text-white text-3xl font-bold mb-6">
-              Browse
-            </h2>
-
-            <div className="grid grid-cols-3 gap-4 mb-10">
-              <div className="bg-cyan-900/40 p-6 rounded-2xl text-white">
-                Sparks
-              </div>
-
-              <div className="bg-pink-900/40 p-6 rounded-2xl text-white">
-                News
-              </div>
-
-              <div className="bg-blue-900/40 p-6 rounded-2xl text-white">
-                New & Hot
-              </div>
-            </div>
-
-            {/* Studios */}
-            <h2 className="text-white text-3xl font-bold mb-6">
-              Studios
-            </h2>
-
-            <div className="grid grid-cols-3 gap-4 mb-10">
-              <div className="bg-gray-800 p-6 rounded-2xl text-white">
-                Disney+
-              </div>
-
-              <div className="bg-gray-800 p-6 rounded-2xl text-white">
-                HBO
-              </div>
-
-              <div className="bg-gray-800 p-6 rounded-2xl text-white">
-                Pixar
-              </div>
-            </div>
-
-            {/* Languages */}
-            <h2 className="text-white text-3xl font-bold mb-6">
-              Languages
-            </h2>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gradient-to-r from-red-500 to-pink-500 p-8 rounded-2xl text-white">
-                Hindi
-              </div>
-
-              <div className="bg-gradient-to-r from-blue-500 to-cyan-500 p-8 rounded-2xl text-white">
-                English
-              </div>
-
-              <div className="bg-gradient-to-r from-yellow-500 to-orange-500 p-8 rounded-2xl text-white">
-                Telugu
-              </div>
-
-              <div className="bg-gradient-to-r from-green-500 to-emerald-500 p-8 rounded-2xl text-white">
-                Tamil
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
     </>
   );
 };

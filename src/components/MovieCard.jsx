@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { MovieContext } from "../context/MovieContext";
 
 const MovieCard = ({ movie }) => {
   const [hovered, setHovered] = useState(false);
+  const { dispatch } = useContext(MovieContext);
 
   return (
     <motion.div
@@ -17,6 +19,23 @@ const MovieCard = ({ movie }) => {
         alt=""
         className="w-full h-full object-cover"
       />
+                <button
+            onClick={() =>
+              dispatch({
+                type: "ADD_TO_WATCHLIST",
+                payload: movie,
+              })
+            }
+            className="
+              absolute bottom-2 right-2
+              bg-pink-500
+              text-white
+              px-3 py-1
+              rounded-lg
+            "
+          >
+            ❤️
+          </button>
 
       {/* Hover Overlay */}
       {hovered && (
