@@ -8,7 +8,7 @@ export const fetchTrendingMovies = async () => {
     `${BASE_URL}?apikey=${API_KEY}&s=avengers`
   );
 
-  return response.data.Search;
+  return response.data.Search || [];
 };
 
 export const fetchActionMovies = async () => {
@@ -16,7 +16,7 @@ export const fetchActionMovies = async () => {
     `${BASE_URL}?apikey=${API_KEY}&s=batman`
   );
 
-  return response.data.Search;
+  return response.data.Search || [] ;
 };
 
 export const fetchComedyMovies = async () => {
@@ -24,7 +24,7 @@ export const fetchComedyMovies = async () => {
     `${BASE_URL}?apikey=${API_KEY}&s=comedy`
   );
 
-  return response.data.Search;
+  return response.data.Search || [];
 };
 
 export const fetchAnimeMovies = async () => {
@@ -32,7 +32,7 @@ export const fetchAnimeMovies = async () => {
     `${BASE_URL}?apikey=${API_KEY}&s=anime`
   );
 
-  return response.data.Search;
+ return response.data.Search || [];
 };
 
 export const fetchSportsMovies = async () => {
@@ -40,7 +40,7 @@ export const fetchSportsMovies = async () => {
     `${BASE_URL}?apikey=${API_KEY}&s=sports`
   );
 
-  return response.data.Search;
+ return response.data.Search || [];
 };
 
   export const fetchTopRatedMovies = async () => {

@@ -1,35 +1,130 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import MovieDetails from "../pages/MovieDetails";
-import Watchlist from "../pages/Watchlist";
-import Search from "../pages/Search";
-import Login from "../pages/Login";
-import Home from "../pages/Home";
-import Register from "../pages/Register";
+import {  BrowserRouter,  Routes,  Route,} from "react-router-dom";
+import ProtectedRoute
+from "../components/ProtectedRoutes";
+
+import {lazy,Suspense,} from "react";
+
+const Login = lazy(() => import("../pages/Login"));
+
+const Register = lazy(() => import("../pages/Register"));
+
+const Home = lazy(() => import("../pages/Home"));
+
+const TrendingPage = lazy(() => import("../pages/TrendingPage"));
+
+const MoviesPage =lazy(() => import("../pages/MoviesPage"));
+
+const ShowsPage = lazy(() => import("../pages/ShowsPage"));
+
+const Sports = lazy(() => import("../pages/SportsPage"));
+
+const CategoriesPage =  lazy(() => import("../pages/CategoriesPage"));
+
+const Watchlist =  lazy(() => import("../pages/Watchlist"));
+
+const Search = lazy(() => import("../pages/Search"));
+
+  const MovieDetails = lazy(() => import("../pages/MovieDetails"));
 
 const AppRoutes = () => {
+
   return (
     <BrowserRouter>
-      <Routes>
-       
-        <Route path="/" element={<Login />} />
-         <Route path="/register" element={<Register />} />
-          <Route path="/home" element={<Home />} />
-        <Route
-          path="/movie/:id"
-          element={<MovieDetails />}
-        />
 
-        <Route
-          path="/watchlist"
-          element={<Watchlist />}
-        />
+      <Suspense
+        fallback={
+          <div className="  h-screen  flex  items-center  justify-center  text-white  bg-black">
+            Loading...
+          </div>
+        }
+      >
 
-        <Route
-          path="/search"
-          element={<Search />}
-        />
-      </Routes>
+        <Routes>
+
+          <Route
+            path="/"
+            element={<Login />}
+          />
+
+          <Route
+            path="/register"
+            element={<Register />}
+          />
+
+          <Route
+            path="/home"
+            element={<ProtectedRoute>
+                            <Home />
+                          </ProtectedRoute>}
+          />
+
+          <Route
+              path="/movie/:id"
+              element={
+                      <ProtectedRoute>
+                        <MovieDetails />
+                      </ProtectedRoute>
+                    }
+           />
+
+          <Route
+            path="/trending"
+            element={<ProtectedRoute>
+                <TrendingPage />
+              </ProtectedRoute>}
+          />
+
+          <Route
+            path="/movies"
+            element={<ProtectedRoute>
+                <MoviesPage />
+              </ProtectedRoute>}
+          />
+
+          <Route
+            path="/shows"
+            element={<ProtectedRoute>
+                <ShowsPage />
+              </ProtectedRoute>}
+          />
+
+          <Route
+            path="/sports"
+            element={<ProtectedRoute>
+                <Sports />
+              </ProtectedRoute>}
+          />
+
+          <Route
+            path="/categories"
+            element={<ProtectedRoute>
+                <CategoriesPage />
+              </ProtectedRoute>}
+                    />
+
+          <Route
+            path="/watchlist"
+            element={
+              <ProtectedRoute>
+                <Watchlist />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/search"
+            element={<ProtectedRoute>
+                <Search />
+              </ProtectedRoute>}
+          />
+
+          
+
+        </Routes>
+
+      </Suspense>
+
     </BrowserRouter>
   );
 };

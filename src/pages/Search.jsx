@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
+import MovieCard from "../components/MovieCard";
 
 const API_KEY = "270d2ace";
 
@@ -54,21 +55,10 @@ const Search = () => {
         gap-6
       ">
         {movies.map((movie) => (
-          <div key={movie.imdbID}>
-            <img
-              src={movie.Poster}
-              alt=""
-              className="
-                rounded-xl
-                hover:scale-110
-                transition
-              "
+                    <MovieCard
+                key={movie.imdbID}
+                movie={movie}
             />
-
-            <h2 className="mt-3 text-sm md:text-lg">
-              {movie.Title}
-            </h2>
-          </div>
         ))}
       </div>
 

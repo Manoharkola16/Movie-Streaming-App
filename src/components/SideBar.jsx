@@ -10,25 +10,62 @@ import {
   Heart,
 } from "lucide-react";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 
 const desktopMenu = [
-  { icon: Home, label: "Home" },
-  { icon: Flame, label: "Trending" },
-  { icon: Film, label: "Movies" },
-  { icon: Tv, label: "Shows" },
-  { icon: Trophy, label: "Sports" },
-  { icon: ListVideo, label: "Categories" },
-  { icon: Search, label: "Search" },
-  { icon: Heart, label: "Watchlist" },
+  {
+    icon: Home,
+    label: "Home",
+    path: "/home",
+  },
+  {
+    icon: Flame,
+    label: "Trending",
+    path: "/trending",
+  },
+  {
+    icon: Film,
+    label: "Movies",
+    path: "/movies",
+  },
+  {
+    icon: Tv,
+    label: "Shows",
+    path: "/shows",
+  },
+  {
+    icon: Trophy,
+    label: "Sports",
+    path: "/sports",
+  },
+  {
+    icon: ListVideo,
+    label: "Categories",
+    path: "/categories",
+  },
+  {
+    icon: Search,
+    label: "Search",
+    path: "/search",
+  },
+  {
+    icon: Heart,
+    label: "Watchlist",
+    path: "/watchlist",
+  },
 ];
 
 const Sidebar = () => {
   const [hovered, setHovered] = useState(false);
-   const [openSheet, setOpenSheet] = useState(false);
-   const navigate = useNavigate();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return (
     <>
       {/* DESKTOP SIDEBAR */}
@@ -41,53 +78,61 @@ const Sidebar = () => {
         transition={{
           duration: 0.3,
         }}
-       className="
+        className="
           hidden md:flex
           fixed left-0 top-0
           h-screen
-          backdrop-blur-5xl
           z-[999]
           flex-col
           py-6 px-4
           overflow-hidden
           text-white
-          "
+        "
       >
         <div className="flex flex-col gap-8 mt-10">
           {desktopMenu.map((item, index) => {
             const Icon = item.icon;
 
+            const isActive =
+              location.pathname === item.path;
+
             return (
               <div
-                    key={index}
-                    onClick={() => {
-                      if (item.label === "Search") {
-                        navigate("/search");
-                      }
-
-                      if (item.label === "Home") {
-                        navigate("/home");
-                      }
-
-                      if (item.label === "Watchlist") {
-                        navigate("/watchlist");
-                      }
-                    }}
-                    className="
-                      flex items-center gap-4
-                      cursor-pointer
-                      hover:text-pink-500
-                      transition-all duration-300
-                    "
-                  >
+                key={index}
+                onClick={() => navigate(item.path)}
+                className={`
+                  flex items-center gap-4
+                  cursor-pointer
+                  transition-all duration-300
+                  p-2 rounded-xl
+                  
+                  ${
+                    isActive
+                      ? "bg-pink-500 text-white"
+                      : "hover:text-pink-500"
+                  }
+                `}
+              >
                 <Icon size={28} />
 
                 {hovered && (
                   <motion.span
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="text-lg font-medium whitespace-nowrap"
+                    initial={{
+                      opacity: 0,
+                      x: -10,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      x: 0,
+                    }}
+                    transition={{
+                      duration: 0.2,
+                    }}
+                    className="
+                      text-lg
+                      font-medium
+                      whitespace-nowrap
+                    "
                   >
                     {item.label}
                   </motion.span>
@@ -98,7 +143,7 @@ const Sidebar = () => {
         </div>
       </motion.div>
 
-      {/* MOBILE OTT NAVBAR */}
+      {/* MOBILE NAVBAR */}
       <div
         className="
           flex md:hidden
@@ -108,39 +153,60 @@ const Sidebar = () => {
           z-50
         "
       >
-        <div className="
-          bg-black/95
-          backdrop-blur-2xl
-          rounded-3xl
-          py-4 px-8
-          flex justify-between items-center
-          w-full
-          border border-gray-800
-        ">
-          {/* Search */}
-          <div onClick={() => navigate("/search")}
-               className="flex flex-col items-center text-white cursor-pointer">
-            <Search size={26} />
-          </div>
+        <div
+          className="
+           
+            backdrop-blur-2xl
+            rounded-3xl
+            py-4 px-8
+            flex justify-between items-center
+            w-full
+            border border-gray-800
+          "
+        >
+          {desktopMenu.slice(0, 5).map((item, index) => {
+            const Icon = item.icon;
 
-          {/* Home */}
-          <div onClick={() => navigate("/")} className="flex flex-col items-center text-white cursor-pointer">
-            <Home size={28} />
-            <span className="text-sm">
-              Home
-            </span>
-          </div>
+            const isActive =
+              location.pathname === item.path;
 
-          {/* AI */}
-          <div className="
-            w-10 h-10
-            rounded-full
-            bg-gradient-to-r
-            from-blue-500
-            to-pink-500
-            flex items-center justify-center
-            text-white
-          ">
+            return (
+              <div
+                key={index}
+                onClick={() => navigate(item.path)}
+                className={`
+                  flex flex-col items-center
+                  cursor-pointer
+                  transition-all duration-300
+
+                  ${
+                    isActive
+                      ? "text-pink-500"
+                      : "text-white"
+                  }
+                `}
+              >
+                <Icon size={24} />
+
+                <span className="text-xs mt-1">
+                  {item.label}
+                </span>
+              </div>
+            );
+          })}
+
+          {/* AI Button */}
+          <div
+            className="
+              w-10 h-10
+              rounded-full
+              bg-gradient-to-r
+              from-blue-500
+              to-pink-500
+              flex items-center justify-center
+              text-white
+            "
+          >
             <Sparkles size={20} />
           </div>
         </div>
