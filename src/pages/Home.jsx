@@ -15,6 +15,10 @@ import {
   fetchMarvelMovies,
   fetchDCMovies,
   fetchThrillerMovies,
+   fetchTeluguMovies,
+  fetchMalayalamMovies,
+  fetchTamilMovies,
+  fetchKannadaMovies,
 } from "../api/MovieApi";
 
 const Home = () => {
@@ -29,7 +33,10 @@ const Home = () => {
   const [marvelMovies, setMarvelMovies] = useState([]);
   const [dcMovies, setDCMovies] = useState([]);
   const [thrillerMovies, setThrillerMovies] = useState([]);
-
+  const [teluguMovies, setTeluguMovies] = useState([]);
+  const [malayalamMovies, setMalayalamMovies] = useState([]);
+  const [tamilMovies, setTamilMovies] = useState([]);
+  const [kannadaMovies, setKannadaMovies] = useState([]);
   useEffect(() => {
     getMovies();
   }, []);
@@ -46,6 +53,10 @@ const Home = () => {
     const marvel = await fetchMarvelMovies();
     const dc = await fetchDCMovies();
     const thriller = await fetchThrillerMovies();
+    const telugu = await fetchTeluguMovies();
+    const malayalam = await fetchMalayalamMovies();
+    const tamil = await fetchTamilMovies();
+    const kannada = await fetchKannadaMovies();
 
 
     setTrendingMovies(trending);
@@ -59,6 +70,11 @@ const Home = () => {
     setMarvelMovies(marvel);
     setDCMovies(dc);
     setThrillerMovies(thriller);
+    setTeluguMovies(telugu);
+    setMalayalamMovies(malayalam);
+    setTamilMovies(tamil);
+    setKannadaMovies(kannada);
+    
   };
 
   return (
@@ -99,6 +115,12 @@ const Home = () => {
         <MovieRow title="Marvel" movies={marvelMovies} />
         <MovieRow title="DC" movies={dcMovies} />
         <MovieRow title="Thriller" movies={thrillerMovies} />
+        <MovieRow title="Telugu" movies={teluguMovies} />
+        <MovieRow title="Malayalam" movies={malayalamMovies} />
+        <MovieRow title="Tamil" movies={tamilMovies} />
+        <MovieRow title="Kannada" movies={kannadaMovies} />
+
+        
       </div>
     </div>
   );

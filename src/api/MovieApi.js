@@ -90,3 +90,35 @@ export const fetchThrillerMovies = async () => {
 
   return response.data.Search || [];
 };
+
+export const fetchTeluguMovies = async () => {
+  const response = await axios.get(
+    `${BASE_URL}?apikey=${API_KEY}&s=telugu`
+  );
+
+  return response.data.Search || [];
+};
+
+export const fetchMalayalamMovies = async () => {
+  const response = await axios.get(
+    `${BASE_URL}?apikey=${API_KEY}&s=malayalam`
+  );
+
+  return response.data.Search || [];
+};
+
+export const fetchTamilMovies = async () => {
+  const response = await axios.get(
+    `${BASE_URL}?apikey=${API_KEY}&s=tamil`
+  );
+
+  return response.data.Search || [];
+};
+
+export const fetchKannadaMovies = async () => {
+  const response = await axios.get(
+    `${BASE_URL}?apikey=${API_KEY}&s=kannada`
+  );
+
+  return response.data.Search || [];
+};
