@@ -21,7 +21,7 @@ const Sports = lazy(() => import("../pages/SportsPage"));
 
 const CategoriesPage =  lazy(() => import("../pages/CategoriesPage"));
 
-const Watchlist =  lazy(() => import("../pages/Watchlist"));
+const Watchlist =  lazy(() => import("../pages/WatchList"));
 
 const Search = lazy(() => import("../pages/Search"));
 
