@@ -1,18 +1,15 @@
-import React from 'react'
-import Login from './pages/Login'
-import Home from './pages/Home'
-import Register from './pages/Register'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import AppRoutes from './routes/AppRoutes';
+import React from "react";
 
+import AppRoutes from "./routes/AppRoutes";
+
+import { MovieProvider } from "./context/MovieContext";
 
 const App = () => {
   return (
-    <div>
-        <AppRoutes />
-        
-    </div>
-  )
-}
+    <MovieProvider>
+      <AppRoutes />
+    </MovieProvider>
+  );
+};
 
-export default App
+export default App;

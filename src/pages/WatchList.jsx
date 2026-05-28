@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 
 import { Trash2 } from "lucide-react";
 
@@ -27,6 +28,25 @@ const Watchlist = () => {
           No movies added yet...
         </div>
       )}
+      <br />
+      <button
+                onClick={() => navigate("/home")}
+                className="
+                    flex items-center gap-2
+                    mb-6
+                    bg-gray-700
+                    px-4 py-2
+                    rounded-lg
+                    text-white
+                    hover:text-pink-500
+                    transition
+                "
+                >
+                <ArrowLeft size={28} />
+                <span className="text-lg">
+                    Back
+                </span>
+       </button>
 
       {/* Movies */}
       <div className="
@@ -54,7 +74,6 @@ const Watchlist = () => {
                 transition
               "
             />
-
             {/* Remove Button */}
             <button
               onClick={() =>
@@ -78,7 +97,11 @@ const Watchlist = () => {
               {movie.Title}
             </h2>
           </div>
+
+          
         ))}
+
+        
       </div>
     </div>
   );

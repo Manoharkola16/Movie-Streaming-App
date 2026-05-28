@@ -87,6 +87,8 @@ const Sidebar = () => {
           py-6 px-4
           overflow-hidden
           text-white
+          bg-black/80
+          gradient-to-b from-black
         "
       >
         <div className="flex flex-col gap-8 mt-10">
@@ -195,20 +197,27 @@ const Sidebar = () => {
             );
           })}
 
-          {/* AI Button */}
-          <div
-            className="
-              w-10 h-10
-              rounded-full
-              bg-gradient-to-r
-              from-blue-500
-              to-pink-500
-              flex items-center justify-center
-              text-white
-            "
-          >
-            <Sparkles size={20} />
-          </div>
+              {/* WATCHLIST BUTTON */}
+        <div
+          onClick={() => navigate("/watchlist")}
+          className={`
+            flex flex-col items-center
+            cursor-pointer
+            transition-all duration-300
+
+            ${
+              location.pathname === "/watchlist"
+                ? "text-pink-500"
+                : "text-white"
+            }
+          `}
+        >
+          <Heart size={24} />
+
+          <span className="text-xs mt-1">
+            Watchlist
+          </span>
+        </div>
         </div>
       </div>
     </>

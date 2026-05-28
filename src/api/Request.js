@@ -9,13 +9,9 @@ const requests = {
   horrorMovies: `/discover/movie?api_key=${API_KEY}&with_genres=27`,
   romanceMovies: `/discover/movie?api_key=${API_KEY}&with_genres=10749`,
   documentaries: `/discover/movie?api_key=${API_KEY}&with_genres=99`,
-
    teluguMovies: `/discover/movie?api_key=${API_KEY}&with_original_language=te`,
-
   malayalamMovies:  `/discover/movie?api_key=${API_KEY}&with_original_language=ml`,
-
   tamilMovies:  `/discover/movie?api_key=${API_KEY}&with_original_language=ta`,
-
   kannadaMovies:  `/discover/movie?api_key=${API_KEY}&with_original_language=kn`,
 };
 

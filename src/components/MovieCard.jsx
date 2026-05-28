@@ -1,3 +1,102 @@
+// import { motion } from "framer-motion";
+// import { useContext, useState } from "react";
+// import { MovieContext } from "../context/MovieContext";
+// import { useNavigate } from "react-router-dom";
+
+// const MovieCard = ({ movie }) => {
+
+//   const [hovered, setHovered] =
+//     useState(false);
+
+//   const { dispatch } =
+//     useContext(MovieContext);
+
+//   const navigate = useNavigate();
+
+//   return (
+//     <motion.div
+//       whileHover={{ scale: 1.1 }}
+
+//       onClick={() =>
+//         navigate(`/movie/${movie.imdbID}`)
+//       }
+
+//       onMouseEnter={() => setHovered(true)}
+
+//       onMouseLeave={() => setHovered(false)}
+
+//       className="
+//         relative
+//         min-w-[150px]
+//         h-[320px]
+//         rounded-xl
+//         overflow-hidden
+//         cursor-pointer
+//       "
+//     >
+//       {/* Poster */}
+//       <img
+//         src={movie.Poster}
+//         alt={movie.Title}
+//         className="
+//           w-full
+//           h-full
+//           object-cover
+//         "
+//       />
+
+
+//       {/* HOVER OVERLAY */}
+//       {hovered && (
+//         <motion.div
+//           initial={{ opacity: 0 }}
+
+//           animate={{ opacity: 1 }}
+
+//           className="
+//             absolute inset-0
+//             bg-black/70
+//             flex flex-col
+//             justify-end
+//             p-4
+//           "
+//         >
+//           <h2 className="text-lg font-bold">
+//             {movie.Title}
+//           </h2>
+
+//           <p className="text-sm text-gray-300">
+//             Action • Adventure
+//           </p>
+
+//           {/* VIDEO PREVIEW */}
+//           <video
+//             autoPlay
+//             muted
+//             loop
+//             className="
+//               absolute inset-0
+//               w-full h-full
+//               object-cover
+//               -z-10
+//             "
+//           >
+//             <source
+//               src="https://www.w3schools.com/html/mov_bbb.mp4"
+//               type="video/mp4"
+//             />
+//           </video>
+//         </motion.div>
+//       )}
+//     </motion.div>
+//   );
+// };
+
+// export default MovieCard;
+
+
+//-----------------------------------------------------------------------------------------------------------------------------------------//
+
 import { motion } from "framer-motion";
 import { useContext, useState } from "react";
 import { MovieContext } from "../context/MovieContext";
@@ -8,36 +107,61 @@ const MovieCard = ({ movie }) => {
   const [hovered, setHovered] =
     useState(false);
 
-  const { dispatch } =
+  const { dispatch, watchlist } =
     useContext(MovieContext);
 
   const navigate = useNavigate();
 
+  const isAdded = watchlist.some(
+    (item) =>
+      item.imdbID === movie.imdbID
+  );
+
   return (
     <motion.div
-      whileHover={{ scale: 1.1 }}
 
-      onClick={() =>
-        navigate(`/movie/${movie.imdbID}`)
+      whileHover={{
+        scale: 1.15,
+        zIndex: 999,
+      }}
+
+      onMouseEnter={() =>
+        setHovered(true)
       }
 
-      onMouseEnter={() => setHovered(true)}
-
-      onMouseLeave={() => setHovered(false)}
+      onMouseLeave={() =>
+        setHovered(false)
+      }
 
       className="
         relative
-        min-w-[150px]
-        h-[320px]
-        rounded-xl
+        z-10
+        min-w-[180px]
+        h-[300px]
+        rounded-2xl
         overflow-hidden
         cursor-pointer
+        flex-shrink-0
+        shadow-xl
       "
     >
-      {/* Poster */}
+
+      {/* POSTER */}
       <img
-        src={movie.Poster}
+        onClick={() =>
+          navigate(
+            `/movie/${movie.imdbID}`
+          )
+        }
+
+        src={
+          movie.Poster !== "N/A"
+            ? movie.Poster
+            : "https://via.placeholder.com/300x450"
+        }
+
         alt={movie.Title}
+
         className="
           w-full
           h-full
@@ -45,61 +169,70 @@ const MovieCard = ({ movie }) => {
         "
       />
 
-      {/* WATCHLIST BUTTON */}
-      <button
-        onClick={(e) => {
-
-          e.stopPropagation();
-
-          dispatch({
-            type: "ADD_TO_WATCHLIST",
-            payload: movie,
-          });
-        }}
-
+      {/* DARK OVERLAY */}
+      <div
         className="
-          absolute bottom-2 right-2
-          bg-pink-500
-          text-white
-          px-3 py-1
-          rounded-lg
-          z-50
+          absolute inset-0
+          bg-gradient-to-t
+          from-black/90
+          via-black/30
+          to-transparent
+        "
+      />
+
+      {/* TITLE */}
+      <div
+        className="
+          absolute
+          bottom-3
+          left-3
+          z-20
         "
       >
-        ❤️
-      </button>
+        <h2
+          className="
+            text-white
+            font-bold
+            text-lg
+            line-clamp-1
+          "
+        >
+          {movie.Title}
+        </h2>
+      </div>
 
       {/* HOVER OVERLAY */}
       {hovered && (
         <motion.div
+
           initial={{ opacity: 0 }}
 
           animate={{ opacity: 1 }}
 
           className="
-            absolute inset-0
-            bg-black/70
-            flex flex-col
+            absolute
+            inset-0
+            z-50
+            bg-black/80
+            backdrop-blur-sm
+            flex
+            flex-col
             justify-end
             p-4
           "
         >
-          <h2 className="text-lg font-bold">
-            {movie.Title}
-          </h2>
-
-          <p className="text-sm text-gray-300">
-            Action • Adventure
-          </p>
 
           {/* VIDEO PREVIEW */}
           <video
             autoPlay
             muted
             loop
+
             className="
-              absolute inset-0
-              w-full h-full
+              absolute
+              inset-0
+              w-full
+              h-full
               object-cover
               -z-10
             "
@@ -109,6 +242,105 @@ const MovieCard = ({ movie }) => {
               type="video/mp4"
             />
           </video>
+
+          {/* MOVIE INFO */}
+          <h2
+            className="
+              text-xl
+              font-bold
+              mb-2
+            "
+          >
+            {movie.Title}
+          </h2>
+
+          <p
+            className="
+              text-gray-300
+              text-sm
+              mb-1
+            "
+          >
+            {movie.Year}
+          </p>
+
+          <p
+            className="
+              text-gray-400
+              text-sm
+              mb-5
+            "
+          >
+            Action • Adventure
+          </p>
+
+          {/* BUTTONS */}
+          <div className="flex gap-3">
+
+            {/* WATCH */}
+            <button
+
+              onClick={(e) => {
+                e.stopPropagation();
+
+                navigate(
+                  `/movie/${movie.imdbID}`
+                );
+              }}
+
+              className="
+                flex-1
+                bg-white
+                text-black
+                py-2
+                rounded-lg
+                font-semibold
+                hover:bg-gray-200
+                transition
+              "
+            >
+              ▶ Watch
+            </button>
+
+            {/* WATCHLIST */}
+            <button
+
+              onClick={(e) => {
+
+                e.stopPropagation();
+
+                dispatch({
+                  type:
+                    "ADD_TO_WATCHLIST",
+
+                  payload: movie,
+                });
+
+                console.log(
+                  "Added:",
+                  movie
+                );
+              }}
+
+              disabled={isAdded}
+
+              className={`
+                px-4
+                py-2
+                rounded-lg
+                font-bold
+                transition
+                ${
+                  isAdded
+                    ? "bg-green-500"
+                    : "bg-pink-500 hover:bg-pink-600"
+                }
+              `}
+            >
+              {isAdded ? "✓" : "+"}
+            </button>
+
+          </div>
         </motion.div>
       )}
     </motion.div>
