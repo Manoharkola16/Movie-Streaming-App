@@ -5,52 +5,35 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Search from "../pages/Search";
 import axios from "axios";
+import { Search as SearchIcon } from "lucide-react";
 
 const HeroBanner = () => {
 
   const [search,setSearch] = useState("");
   const navigate = useNavigate();
+  
 
   const API_KEY = "270d2ace";
 
-const handleSearch = async (e) => {
+    const handleSearch = async () => {
+      if (!search.trim()) return;
 
-  if (e.key !== "Enter") return;
+      try {
+        const response = await axios.get(
+          `https://www.omdbapi.com/?apikey=${API_KEY}&s=${search}`
+        );
 
-  if (!search.trim()) return;
+        const movies = response.data.Search;
 
-  try {
-
-    const response =
-      await axios.get(
-        `https://www.omdbapi.com/?apikey=${API_KEY}&s=${search}`
-      );
-
-    const movies =
-      response.data.Search;
-
-    // MOVIE FOUND
-    if (
-      movies &&
-      movies.length > 0
-    ) {
-
-      navigate(
-        `/movie/${movies[0].imdbID}`
-      );
-
-    } else {
-
-      alert("No movie found 😢");
-    }
-
-  } catch (error) {
-
-    console.log(error);
-
-    alert("Something went wrong");
-  }
-};
+        if (movies && movies.length > 0) {
+          navigate(`/movie/${movies[0].imdbID}`);
+        } else {
+          alert("No movie found 😢");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
   return (
     <section className="relative h-[95vh] w-full overflow-hidden text-white">
 
@@ -90,43 +73,50 @@ const handleSearch = async (e) => {
   />
 
   {/* SEARCH */}
-  <div
+<div
+  className="
+    flex
+    items-center
+    bg-white/10
+    backdrop-blur-md
+    px-4
+    py-2
+    rounded-full
+    w-[300px]
+  "
+>
+  <input
+    type="text"
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") {
+        handleSearch();
+      }
+    }}
+    placeholder="Search"
     className="
-      flex
-      items-center
-      bg-white/10
-      backdrop-blur-md
-      px-4
-      py-2
-      rounded-full
-      w-[300px]
-     "
-  > 
-     
+      bg-transparent
+      outline-none
+      text-sm
+      w-full
+      placeholder:text-gray-300
+    "
+  />
 
-    <input
-          type="text"
-
-          value={search}
-
-          onChange={(e) =>
-            setSearch(e.target.value)
-          }
-
-          onKeyDown={handleSearch}
-
-          placeholder="Search"
-
-          className="
-            bg-transparent
-            outline-none
-            text-sm
-            w-full
-            placeholder:text-gray-300
-          "
-        />
-  </div>
+  <button
+    onClick={handleSearch}
+    className="
+      ml-2
+      p-1
+      hover:text-pink-400
+      transition
+    "
+  >
+    <SearchIcon size={20} />
+  </button>
 </div>
+    </div>
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/10" />
 

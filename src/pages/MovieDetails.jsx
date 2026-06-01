@@ -3,6 +3,7 @@ import {useNavigate,useParams,} from "react-router-dom";
 import { ArrowLeft,} from "lucide-react";
 import axios from "axios";
 import {MovieContext,} from "../context/MovieContext";
+import {fetchMovieTrailer,} from "../api/Tmdb";
 
 const API_KEY = "270d2ace";
 
@@ -11,6 +12,7 @@ const MovieDetails = () => {
   const { id } = useParams();
 
   const navigate = useNavigate();
+  const [trailerKey, setTrailerKey] = useState(null);
 
   const [movie, setMovie] =
     useState(null);
@@ -33,6 +35,11 @@ const MovieDetails = () => {
         );
 
       setMovie(response.data);
+
+       const key =  await fetchMovieTrailer(
+      response.data.Title
+        )
+        setTrailerKey(key);
     };
 
   if (!movie) {
@@ -59,6 +66,8 @@ const MovieDetails = () => {
       (item) =>
         item.imdbID === movie.imdbID
     );
+
+   
 
   return (
     <div
@@ -94,6 +103,7 @@ const MovieDetails = () => {
 
           className="
             w-full
+          
             md:w-[320px]
             rounded-2xl
             shadow-2xl
@@ -177,6 +187,52 @@ const MovieDetails = () => {
             </p>
 
           </div>
+
+              <div className="mt-10">
+
+  <h2 className="text-3xl font-bold mb-4">
+    Official Trailer
+  </h2>
+
+  {trailerKey ? (
+
+    <div className="aspect-video w-full rounded-xl overflow-hidden">
+      <iframe
+        width="100%"
+        height="100%"
+        src={`https://www.youtube.com/embed/${trailerKey}`}
+        title="Movie Trailer"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    </div>
+
+  ) : (
+
+    <button
+      onClick={() =>
+        window.open(
+          `https://www.youtube.com/results?search_query=${movie.Title}+official+trailer`,
+          "_blank"
+        )
+      }
+      className="
+        bg-pink-500
+        hover:bg-pink-600
+        px-3
+        py-4
+        gap-6
+        rounded-xl
+        font-bold
+      "
+    >
+      🎬 Watch Trailer on YouTube
+    </button>
+
+     )}
+
+     </div>
+     <br />
 
           {/* WATCHLIST BUTTON */}
           <button
