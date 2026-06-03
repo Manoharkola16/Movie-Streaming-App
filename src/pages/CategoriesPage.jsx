@@ -26,7 +26,9 @@ const categories = [
 const CategoriesPage = () => {
 
   const navigate = useNavigate();
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalResults, setTotalResults] = useState(0);
+ const totalPages = Math.ceil(totalResults / 10);
   const [selectedCategory,
     setSelectedCategory] =
     useState("Action");
@@ -44,32 +46,26 @@ const CategoriesPage = () => {
 
   }, [selectedCategory]);
 
-  const fetchMovies = async (
-    category
-  ) => {
+  useEffect(() => {
+  fetchMovies(selectedCategory, currentPage);
+  }, [selectedCategory, currentPage]);
 
-    try {
+ const fetchMovies = async (category, page) => {
+  try {
+    setLoading(true);
 
-      setLoading(true);
+    const response = await axios.get(
+      `https://www.omdbapi.com/?apikey=${API_KEY}&s=${category}&page=${page}`
+    );
 
-      const response =
-        await axios.get(
-          `https://www.omdbapi.com/?apikey=${API_KEY}&s=${category}`
-        );
-
-      setMovies(
-        response.data.Search || []
-      );
-
-    } catch (error) {
-
-      console.log(error);
-
-    } finally {
-
-      setLoading(false);
-    }
-  };
+    setMovies(response.data.Search || []);
+    setTotalResults(Number(response.data.totalResults) || 0);
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div
@@ -114,9 +110,10 @@ const CategoriesPage = () => {
               scale: 0.95,
             }}
 
-            onClick={() =>
-              setSelectedCategory(category)
-            }
+           onClick={() => {
+              setSelectedCategory(category);
+              setCurrentPage(1);
+            }}
 
             className={`
               px-6 py-3
@@ -174,6 +171,40 @@ const CategoriesPage = () => {
               movie={movie}
             />
           ))}
+        </div>
+      )}
+
+          {!loading && movies.length > 0 && (
+        <div className="flex justify-center items-center gap-4 mt-10">
+          <button
+            onClick={() => setCurrentPage((prev) => prev - 1)}
+            disabled={currentPage === 1}
+            className="
+              px-4 py-2
+              bg-pink-500
+              rounded-lg
+              disabled:opacity-50
+            "
+          >
+            Previous
+          </button>
+
+          <span className="text-lg">
+            Page {currentPage} of {totalPages}
+          </span>
+
+          <button
+            onClick={() => setCurrentPage((prev) => prev + 1)}
+            disabled={currentPage === totalPages}
+            className="
+              px-4 py-2
+              bg-pink-500
+              rounded-lg
+              disabled:opacity-50
+            "
+          >
+            Next
+          </button>
         </div>
       )}
 
