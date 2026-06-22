@@ -13,14 +13,15 @@ const MovieRow = ({ title, movies }) => {
       </h2>
 
       <div className="flex gap-4 overflow-x-scroll overflow-y-visible py-8 scrollbar-none">
-        {movies?.map((movie) => (
-          <img
-            key={movie.imdbID}
-            src={movie.Poster}
-            alt={movie.Title}
-            onClick={() => navigate(`/movie/${movie.imdbID}`)}
-            className="w-[180px] h-[250px] object-cover rounded-lg hover:scale-125 hover:z-50 transition-all duration-300 cursor-pointer"          />
-        ))}
+       {movies?.map((movie) => (
+            <img
+              key={movie.imdbID}
+              src={movie.Poster}
+              alt={movie.Title}
+              onClick={() => navigate(`/movie/${movie.imdbID}`)}
+              className="w-[180px] h-[250px] object-cover rounded-lg hover:scale-125 hover:z-50 transition-all duration-300 cursor-pointer"
+            />
+          ))}
       </div>
     </div>
   );

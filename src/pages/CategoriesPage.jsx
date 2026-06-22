@@ -28,7 +28,7 @@ const CategoriesPage = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
- const totalPages = Math.ceil(totalResults / 10);
+  const totalPages = Math.ceil(totalResults / 10);
   const [selectedCategory,
     setSelectedCategory] =
     useState("Action");

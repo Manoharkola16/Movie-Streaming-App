@@ -17,24 +17,35 @@ const MoviesPage = () => {
   const [comedyMovies, setComedyMovies] =
     useState([]);
 
-  useEffect(() => {
+     const [actionPage, setActionPage] = useState(1);
+        const [comedyPage, setComedyPage] = useState(1);
 
-    const getMovies = async () => {
+        const [actionTotalPages, setActionTotalPages] = useState(1);
+        const [comedyTotalPages, setComedyTotalPages] = useState(1);
 
-      const action =
-        await fetchActionMovies();
 
-      const comedy =
-        await fetchComedyMovies();
+ useEffect(() => {
+  const getMovies = async () => {
+    const action =
+      await fetchActionMovies(actionPage);
 
-      setActionMovies(action);
+    const comedy =
+      await fetchComedyMovies(comedyPage);
 
-      setComedyMovies(comedy);
-    };
+    setActionMovies(action.movies);
+    setComedyMovies(comedy.movies);
 
-    getMovies();
+    setActionTotalPages(
+      Math.ceil(action.totalResults / 10)
+    );
 
-  }, []);
+    setComedyTotalPages(
+      Math.ceil(comedy.totalResults / 10)
+    );
+  };
+
+  getMovies();
+}, [actionPage, comedyPage]);
 
   return (
     <div className="p-10 text-white bg-black">
@@ -67,6 +78,32 @@ const MoviesPage = () => {
         </div>
       </div>
 
+      <div className="flex justify-center items-center gap-4 mt-6">
+  <button
+    onClick={() =>
+      setActionPage((prev) => prev - 1)
+    }
+    disabled={actionPage === 1}
+    className="px-4 py-2 bg-zinc-800 rounded"
+  >
+    Prev
+  </button>
+
+  <span>
+    {actionPage} / {actionTotalPages}
+  </span>
+
+  <button
+    onClick={() =>
+      setActionPage((prev) => prev + 1)
+    }
+    disabled={actionPage === actionTotalPages}
+    className="px-4 py-2 bg-pink-500 rounded"
+  >
+    Next
+  </button>
+</div>
+
       {/* COMEDY */}
       <div>
 
@@ -89,6 +126,32 @@ const MoviesPage = () => {
           ))}
         </div>
       </div>
+
+      <div className="flex justify-center items-center gap-4 mt-6">
+  <button
+    onClick={() =>
+      setComedyPage((prev) => prev - 1)
+    }
+    disabled={comedyPage === 1}
+    className="px-4 py-2 bg-zinc-800 rounded"
+  >
+    Prev
+  </button>
+
+  <span>
+    {comedyPage} / {comedyTotalPages}
+  </span>
+
+  <button
+    onClick={() =>
+      setComedyPage((prev) => prev + 1)
+    }
+    disabled={comedyPage === comedyTotalPages}
+    className="px-4 py-2 bg-pink-500 rounded"
+  >
+    Next
+  </button>
+</div>
 
             <button
                 onClick={() => navigate("/home")}

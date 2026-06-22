@@ -59,22 +59,22 @@ const Home = () => {
     const kannada = await fetchKannadaMovies();
 
 
-    setTrendingMovies(trending);
-    setActionMovies(action);
-    setComedyMovies(comedy);
-    setAnimeMovies(anime);
-    setSportsMovies(sports);
-    setTopRated(topRated);
-    setSciFiMovies(sciFi);
-    setAdventureMovies(adventure);
-    setMarvelMovies(marvel);
-    setDCMovies(dc);
-    setThrillerMovies(thriller);
-    setTeluguMovies(telugu);
-    setMalayalamMovies(malayalam);
-    setTamilMovies(tamil);
-    setKannadaMovies(kannada);
-    
+   setTrendingMovies(trending.movies);
+    setActionMovies(action.movies);
+    setComedyMovies(comedy.movies);
+    setAnimeMovies(anime.movies);
+    setSportsMovies(sports.movies);
+    setTopRated(topRated.movies);
+    setSciFiMovies(sciFi.movies);
+    setAdventureMovies(adventure.movies);
+    setMarvelMovies(marvel.movies);
+    setDCMovies(dc.movies);
+    setThrillerMovies(thriller.movies);
+    setTeluguMovies(telugu.movies);
+    setMalayalamMovies(malayalam.movies);
+    setTamilMovies(tamil.movies);
+    setKannadaMovies(kannada.movies);
+        
   };
 
   return (

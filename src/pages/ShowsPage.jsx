@@ -18,24 +18,34 @@ const ShowsPage = () => {
   const [sciFiShows, setSciFiShows] =
     useState([]);
 
-  useEffect(() => {
+    const [animePage, setAnimePage] = useState(1);
+const [sciFiPage, setSciFiPage] = useState(1);
 
-    const getShows = async () => {
+const [animeTotalPages, setAnimeTotalPages] = useState(1);
+const [sciFiTotalPages, setSciFiTotalPages] = useState(1);
 
-      const anime =
-        await fetchAnimeMovies();
+ useEffect(() => {
+  const getShows = async () => {
+    const anime =
+      await fetchAnimeMovies(animePage);
 
-      const scifi =
-        await fetchSciFiMovies();
+    const scifi =
+      await fetchSciFiMovies(sciFiPage);
 
-      setAnimeShows(anime);
+    setAnimeShows(anime.movies);
+    setSciFiShows(scifi.movies);
 
-      setSciFiShows(scifi);
-    };
+    setAnimeTotalPages(
+      Math.ceil(anime.totalResults / 10)
+    );
 
-    getShows();
+    setSciFiTotalPages(
+      Math.ceil(scifi.totalResults / 10)
+    );
+  };
 
-  }, []);
+  getShows();
+}, [animePage, sciFiPage]);
 
   return (
     <div className="p-10 text-white bg-black">
@@ -66,6 +76,32 @@ const ShowsPage = () => {
           ))}
         </div>
       </div>
+
+      <div className="flex justify-center gap-4 mt-6">
+  <button
+    onClick={() =>
+      setAnimePage((prev) => prev - 1)
+    }
+    disabled={animePage === 1}
+    className="px-4 py-2 bg-zinc-800 rounded"
+  >
+    Prev
+  </button>
+
+  <span>
+    {animePage} / {animeTotalPages}
+  </span>
+
+  <button
+    onClick={() =>
+      setAnimePage((prev) => prev + 1)
+    }
+    disabled={animePage === animeTotalPages}
+    className="px-4 py-2 bg-pink-500 rounded"
+  >
+    Next
+  </button>
+</div>
 
       {/* SCI-FI */}
       <div>
@@ -110,6 +146,32 @@ const ShowsPage = () => {
           ))}
         </div>
       </div>
+             
+             <div className="flex justify-center gap-4 mt-6">
+  <button
+    onClick={() =>
+      setSciFiPage((prev) => prev - 1)
+    }
+    disabled={sciFiPage === 1}
+    className="px-4 py-2 bg-zinc-800 rounded"
+  >
+    Prev
+  </button>
+
+  <span>
+    {sciFiPage} / {sciFiTotalPages}
+  </span>
+
+  <button
+    onClick={() =>
+      setSciFiPage((prev) => prev + 1)
+    }
+    disabled={sciFiPage === sciFiTotalPages}
+    className="px-4 py-2 bg-pink-500 rounded"
+  >
+    Next
+  </button>
+</div>
 
       <button
                 onClick={() => navigate("/home")}

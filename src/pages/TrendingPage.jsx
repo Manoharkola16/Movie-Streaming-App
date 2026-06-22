@@ -9,21 +9,24 @@ const TrendingPage = () => {
 
   const navigate = useNavigate();
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const [movies, setMovies] = useState([]);
 
-  useEffect(() => {
-
+ useEffect(() => {
     const getMovies = async () => {
+    const data = await fetchTrendingMovies(currentPage);
 
-      const data =
-        await fetchTrendingMovies();
+    setMovies(data.movies);
 
-      setMovies(data);
-    };
+    setTotalPages(
+      Math.ceil(data.totalResults / 10)
+    );
+  };
 
-    getMovies();
-
-  }, []);
+  getMovies();
+ }, [currentPage]);
 
   return (
     <div className="p-10 text-white bg-black">
@@ -46,6 +49,42 @@ const TrendingPage = () => {
             />
         ))}
       </div>
+
+      <div className="flex justify-center items-center gap-4 mt-10">
+  <button
+    onClick={() =>
+      setCurrentPage((prev) => prev - 1)
+    }
+    disabled={currentPage === 1}
+    className="
+      px-4 py-2
+      bg-pink-500
+      rounded-lg
+      disabled:opacity-50
+    "
+  >
+    Previous
+  </button>
+
+  <span>
+    Page {currentPage} of {totalPages}
+  </span>
+
+  <button
+    onClick={() =>
+      setCurrentPage((prev) => prev + 1)
+    }
+    disabled={currentPage === totalPages}
+    className="
+      px-4 py-2
+      bg-pink-500
+      rounded-lg
+      disabled:opacity-50
+    "
+  >
+    Next
+  </button>
+  </div>
 
       <button
                 onClick={() => navigate("/home")}
